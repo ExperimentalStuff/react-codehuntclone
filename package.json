@@ -1,0 +1,14 @@
+{
+  "name": "codehuntclone",
+  "version": "1.0.0",
+  "description": "a clone for codehunt website with react",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/express-server.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
