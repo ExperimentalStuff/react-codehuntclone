@@ -4,11 +4,20 @@
   "description": "a clone for codehunt website with react",
   "main": "index.js",
   "scripts": {
-    "start": "node server/express-server.js"
+    "start": "node server/express-server.js",
+    "build": "browserify -t [ babelify --presets [ es2015 stage-0 react ] ] ./src/react-components/app.js -o ./public/js/app.js",
+    "build:watch": "watch 'npm run build' src"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.13.4"
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babelify": "^7.2.0",
+    "express": "^4.13.4",
+    "react": "^0.14.8",
+    "react-dom": "^0.14.8",
+    "watch": "^0.17.1"
   }
 }
