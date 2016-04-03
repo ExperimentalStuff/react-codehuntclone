@@ -19029,7 +19029,6 @@ var HomePage = function (_React$Component) {
 										null,
 										_react2.default.createElement('i', { className: 'fa fa-sort-asc' })
 									),
-									_react2.default.createElement('br', null),
 									this.state.productList[0].upvote
 								),
 								_react2.default.createElement('img', { className: 'product-item-media', src: this.state.productList[0].media }),
@@ -19077,7 +19076,6 @@ var HomePage = function (_React$Component) {
 										null,
 										_react2.default.createElement('i', { className: 'fa fa-sort-asc' })
 									),
-									_react2.default.createElement('br', null),
 									this.state.productList[1].upvote
 								),
 								_react2.default.createElement('img', { className: 'product-item-media', src: this.state.productList[1].media }),
