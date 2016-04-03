@@ -453,3 +453,7 @@ a {
   color: #444444;
   text-decoration: none;
 }
+
+ol,ul {
+  list-style: none;
+}
