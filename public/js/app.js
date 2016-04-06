@@ -19100,7 +19100,7 @@ var Navbar = function (_React$Component) {
 				null,
 				_react2.default.createElement(
 					"section",
-					{ className: "Navbar" },
+					{ className: "navbar" },
 					this.renderProductSearch(),
 					this.renderLogo(),
 					this.renderUser()

@@ -3,7 +3,7 @@ import React from 'react';
 class Navbar extends React.Component {
 	renderProductSearch() {
 		return (
-				<section className="left-side">
+				<section className="left-side"> 
 					<input className="product-search" placeholder="SEARCH" />
 				</section>
 			);
@@ -26,7 +26,7 @@ class Navbar extends React.Component {
 	render (){
 		return (
 				<section>
-					<section className="Navbar">
+					<section className="navbar">
 						{this.renderProductSearch()}
 						{this.renderLogo()}
 						{this.renderUser()}
