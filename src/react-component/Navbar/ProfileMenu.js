@@ -1,6 +1,38 @@
 import React from 'react';
 
 class ProfileMenu extends React.Component {
+	constructor (){
+		super();
+		this.state = {
+			showProfileNav: false
+		}
+	}
+
+	handleClick = () => {
+		if (this.state.showProfileNav) {
+			this.setState({showProfileNav: false});
+		} else {
+			this.setState({showProfileNav: true});
+		}
+	};
+
+	// close profile menu when anywhere outside the menu is clicked 
+	handleClickOutside = (e) => {
+		if (e.target != this.refs.profileBtn) {
+			this.setState({showProfileNav: false});
+		}
+	};
+
+	// componentWillMount content will be executed before this component is rendered//
+	componentWillMount (){
+		window.addEventListener("click", this.handleClickOutside, false);
+	}
+
+	// componentWillUnMount content will be executed before this component is removed//
+	componentWillUnMount (){
+		window.removeEventListener("click", this.handleClickOutside, false);
+	}
+
 	renderProfileNav (){
 		return (
 			<nav className="profile-nav" ref="profileNav">
@@ -13,8 +45,14 @@ class ProfileMenu extends React.Component {
 	render (){
 		return (
 				<section className="profile-menu">
-					<img src="/img/leo.jpeg" className="profile-btn medium-avatar"/>
-					{this.renderProfileNav()}
+					<img src="/img/leo.jpeg" onClick={this.handleClick} className="profile-btn medium-avatar" ref="profileBtn"/>
+					{
+						this.state.showProfileNav
+						?
+						this.renderProfileNav()
+						:
+						null
+					}
 				</section>
 			);
 	}
