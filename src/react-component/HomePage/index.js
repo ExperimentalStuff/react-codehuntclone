@@ -1,37 +1,25 @@
 import React from 'react';
 import ProductList from '../Product/ProductList';
+import Firebase from 'firebase';
 
 class HomePage extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			productList: [
-				{
-					id: 1,
-					name: 'CodeAcademy',
-					link: 'https://codeacademy.com',
-					media: "/img/codecademy.jpeg",
-					upvote: 169,
-					description: "code for anyone",
-					maker: {
-						name: 'hieu',
-						avatar: '/img/hieu.jpeg'
-					}
-				},
-				{
-					id: 2,
-					name: 'Code4Startup',
-					link: 'https://code4startup.com',
-					media: '/img/code4startup.jpeg',
-					upvote: 200,
-					description: "code for startup",
-					maker: {
-						name: 'leo',
-						avatar: '/img/leo.jpeg'
-					}
-				}
-			]
+			productList: []
 		}
+
+		// link to firebase api //
+		var firebaseRef = new Firebase('https://producthunt-rainy.firebaseio.com/products');
+		firebaseRef.on('value', (snapshot) => {
+			var products = snapshot.val();
+			// workaround for firebase return object type//
+			this.setState({
+				productList: [products['1'],products['2']]
+			});
+
+			console.log(products);
+		});
 	}
 
 	render(){
