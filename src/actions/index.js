@@ -64,6 +64,15 @@ class Actions {
 		}
 	}
 
+	addProduct(product) {
+		return (dispatch) => {
+			var firebaseRef = new Firebase('https://producthunt-rainy.firebaseio.com/products');
+
+			firebaseRef.push(product);
+
+		}
+	}
+
 
 }
 
