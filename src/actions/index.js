@@ -5,10 +5,18 @@ class Actions {
 	login (){
 		return (dispatch) => {
 			var firebaseRef = new Firebase('https://producthunt-rainy.firebaseio.com');
-			firebaseRef.authWithOAuthPopup('facebook', (error, user) => {
+			firebaseRef.authWithOAuthPopup('facebook', (error, authData) => {
 				if (error) {
 					return;
-				} 
+				}
+
+				var user = {
+					id: authData.facebook.id,
+					name: authData.facebook.displayName,
+					avatar: authData.facebook.profileImageURL
+				}
+
+				firebaseRef.child("users").child(authData.facebook.id).set(user);
 				dispatch(user);
 			});	
 		}
