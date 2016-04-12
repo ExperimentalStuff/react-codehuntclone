@@ -21157,6 +21157,27 @@ var Actions = function () {
 	}
 
 	_createClass(Actions, [{
+		key: 'initSession',
+		value: function initSession() {
+			return function (dispatch) {
+				var firebaseRef = new _firebase2.default('https://producthunt-rainy.firebaseio.com');
+				var authData = firebaseRef.getAuth();
+				var user;
+
+				if (authData) {
+					user = {
+						id: authData.facebook.id,
+						name: authData.facebook.displayName,
+						avatar: authData.facebook.profileImageURL
+					};
+				} else {
+					user = null;
+				}
+
+				dispatch(user);
+			};
+		}
+	}, {
 		key: 'login',
 		value: function login() {
 			return function (dispatch) {
