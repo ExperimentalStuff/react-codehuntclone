@@ -19,9 +19,11 @@ class ProductStore {
 
 	@bind(Actions.getProducts)
 	getProducts(products) {
-		// work around because firebase return products as object but not array
+		/* work around because firebase return products as object but not array,
+		deprecated because use lodash to transform object to array of values in actions
 		var productArray = Object.keys(products).map(function(key){return products[key];});
-		this.setState({products: productArray});
+		*/
+		this.setState({products: products});
 	}
 }
 

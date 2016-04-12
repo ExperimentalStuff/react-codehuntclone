@@ -1,5 +1,6 @@
 import alt from '../alt';
 import Firebase from 'firebase';
+import _ from 'lodash';
 
 class Actions {
 
@@ -58,7 +59,8 @@ class Actions {
 		return (dispatch) => {
 			var firebaseRef = new Firebase('https://producthunt-rainy.firebaseio.com/products');
 			firebaseRef.on('value', (snapshot) => {
-				var products = snapshot.val();
+				// transform object to array with only values with lodash
+				var products = _.values(snapshot.val());
 				dispatch(products);
 			})
 		}
