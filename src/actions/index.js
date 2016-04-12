@@ -20,7 +20,9 @@ class Actions {
 				user = null;
 			}
 
-			dispatch(user);
+			// Asynchronous: need to use setTimeout to handle
+
+			setTimeout(()=>dispatch(user));
 		}
 	}
 
@@ -41,6 +43,14 @@ class Actions {
 				firebaseRef.child("users").child(authData.facebook.id).set(user);
 				dispatch(user);
 			});	
+		}
+	}
+
+	logout() {
+		return (dispatch) => {
+			var firebaseRef = new Firebase('https://producthunt-rainy.firebaseio.com');
+			firebaseRef.unauth();
+			setTimeout(() => dispatch(null));
 		}
 	}
 }

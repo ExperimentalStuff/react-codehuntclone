@@ -9,8 +9,8 @@ class ProductStore {
 		this.state = {user: null};
 	}
 
-	@bind(Actions.login)
-	login(user) {
+	@bind(Actions.login, Actions.initSession, Actions.logout)
+	setUser(user) {
 		this.setState({user: user});
 	}
 }
