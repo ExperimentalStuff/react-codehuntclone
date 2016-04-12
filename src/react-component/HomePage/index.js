@@ -1,15 +1,23 @@
 import React from 'react';
 import ProductList from '../Product/ProductList';
 import Firebase from 'firebase';
+import connectToStores from 'alt-utils/lib/connectToStores';
+import ProductStore from '../../stores/ProductStore';
+import Actions from '../../actions';
 
+@connectToStores
 class HomePage extends React.Component {
 	constructor() {
 		super();
+
+		/* deprecated: data flow shift to dispatcher
 		this.state = {
 			productList: []
 		}
+		*/
 
 		// link to firebase api //
+		/*
 		var firebaseRef = new Firebase('https://producthunt-rainy.firebaseio.com/products');
 		firebaseRef.on('value', (snapshot) => {
 			var products = snapshot.val();
@@ -20,6 +28,16 @@ class HomePage extends React.Component {
 
 			console.log(products);
 		});
+		*/
+		Actions.getProducts();
+	}
+
+	static getStores() {
+		return [ProductStore];
+	}
+
+	static getPropsFromStores() {
+		return ProductStore.getState();
 	}
 
 	render(){
@@ -32,9 +50,9 @@ class HomePage extends React.Component {
 					<section>
 						<section className="container">
 							{
-								this.state.productList
+								this.props.products
 								?
-							<ProductList productList={this.state.productList} />
+							<ProductList productList={this.props.products} />
 								:
 								null
 							}
