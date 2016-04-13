@@ -4,6 +4,7 @@ import Actions from '../../actions';
 import connectToStores from 'alt-utils/lib/connectToStores';
 import ProductStore from '../../stores/ProductStore';
 
+@connectToStores
 class ProductItem extends React.Component {
 	constructor (){
 		super();
@@ -29,7 +30,7 @@ class ProductItem extends React.Component {
 	};
 
 	handleVote = () => {
-		Actions.addVote(this.props.pid, this.props.user)
+		Actions.addVote(this.props.pid, this.props.user.id);
 	};
 
 	renderUpvoteButton() {

@@ -37226,17 +37226,26 @@ var Actions = function () {
 	}, {
 		key: 'addVote',
 		value: function addVote(productId, userId) {
+			console.log(userId);
 			return function (dispatch) {
 				var firebaseRef = new _firebase2.default('https://producthunt-rainy.firebaseio.com');
 
-				firebaseRef = firebaseRef.child('products').child(productId).child('upvote');
+				// check for voted users, can not vote if already voted //
+				var voteRef = firebaseRef.child('votes').child(productId).child(userId);
+				voteRef.on('value', function (snapshot) {
+					if (snapshot.val() == null) {
+						voteRef.set(true);
 
-				var vote = 0;
-				firebaseRef.on('value', function (snapshot) {
-					vote = snapshot.val();
+						firebaseRef = firebaseRef.child('products').child(productId).child('upvote');
+
+						var vote = 0;
+						firebaseRef.on('value', function (snapshot) {
+							vote = snapshot.val();
+						});
+
+						firebaseRef.set(vote + 1);
+					}
 				});
-
-				firebaseRef.set(vote + 1);
 			};
 		}
 	}]);
@@ -37941,6 +37950,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _class;
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -37969,7 +37980,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ProductItem = function (_React$Component) {
+var ProductItem = (0, _connectToStores2.default)(_class = function (_React$Component) {
 	_inherits(ProductItem, _React$Component);
 
 	function ProductItem() {
@@ -37986,7 +37997,7 @@ var ProductItem = function (_React$Component) {
 		};
 
 		_this.handleVote = function () {
-			_actions2.default.addVote(_this.props.pid, _this.props.user);
+			_actions2.default.addVote(_this.props.pid, _this.props.user.id);
 		};
 
 		_this.state = {
@@ -38075,7 +38086,7 @@ var ProductItem = function (_React$Component) {
 	}]);
 
 	return ProductItem;
-}(_react2.default.Component);
+}(_react2.default.Component)) || _class;
 
 exports.default = ProductItem;
 
