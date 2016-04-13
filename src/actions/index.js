@@ -109,6 +109,14 @@ class Actions {
 		}
 	}
 
+	addComment(productId, comment) {
+		return (dispatch)=> {
+			var firebaseRef = new Firebase('https://producthunt-rainy.firebaseio.com/comments');
+
+			firebaseRef.child(productId).push(comment);
+		}
+	}
+
 }
 
 export default alt.createActions(Actions);
