@@ -79,7 +79,7 @@ class ProductItem extends React.Component {
 
 				{this.renderInfoSession()}
 				{this.renderNewWindowIcon()}
-				<ProductPopup status={this.state.productPopupStatus} hidePopup={this.hideProductPopup}/>
+				<ProductPopup {...this.props} status={this.state.productPopupStatus} hidePopup={this.hideProductPopup}/>
 			</li>
 		);
 	}
