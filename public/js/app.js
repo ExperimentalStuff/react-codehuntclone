@@ -37200,7 +37200,16 @@ var Actions = function () {
 				var firebaseRef = new _firebase2.default('https://producthunt-rainy.firebaseio.com/products');
 				firebaseRef.on('value', function (snapshot) {
 					// transform object to array with only values with lodash
-					var products = _lodash2.default.values(snapshot.val());
+
+					// require second fix because key is also needed for upvote function
+					var productsValue = snapshot.val();
+					// extract key, value as array and pass key back to array
+					var products = (0, _lodash2.default)(productsValue).keys().map(function (productKey) {
+						var item = _lodash2.default.clone(productsValue[productKey]);
+						item.key = productKey;
+						return item;
+					}).value();
+
 					dispatch(products);
 				});
 			};
@@ -37212,6 +37221,22 @@ var Actions = function () {
 				var firebaseRef = new _firebase2.default('https://producthunt-rainy.firebaseio.com/products');
 
 				firebaseRef.push(product);
+			};
+		}
+	}, {
+		key: 'addVote',
+		value: function addVote(productId, userId) {
+			return function (dispatch) {
+				var firebaseRef = new _firebase2.default('https://producthunt-rainy.firebaseio.com');
+
+				firebaseRef = firebaseRef.child('products').child(productId).child('upvote');
+
+				var vote = 0;
+				firebaseRef.on('value', function (snapshot) {
+					vote = snapshot.val();
+				});
+
+				firebaseRef.set(vote + 1);
 			};
 		}
 	}]);
@@ -37924,6 +37949,18 @@ var _ProductPopup = require('./ProductPopup');
 
 var _ProductPopup2 = _interopRequireDefault(_ProductPopup);
 
+var _actions = require('../../actions');
+
+var _actions2 = _interopRequireDefault(_actions);
+
+var _connectToStores = require('alt-utils/lib/connectToStores');
+
+var _connectToStores2 = _interopRequireDefault(_connectToStores);
+
+var _ProductStore = require('../../stores/ProductStore');
+
+var _ProductStore2 = _interopRequireDefault(_ProductStore);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37948,6 +37985,10 @@ var ProductItem = function (_React$Component) {
 			_this.setState({ productPopupStatus: false });
 		};
 
+		_this.handleVote = function () {
+			_actions2.default.addVote(_this.props.pid, _this.props.user);
+		};
+
 		_this.state = {
 			productPopupStatus: false
 		};
@@ -37959,7 +38000,7 @@ var ProductItem = function (_React$Component) {
 		value: function renderUpvoteButton() {
 			return _react2.default.createElement(
 				'a',
-				{ className: 'upvote-button', href: '#' },
+				{ className: 'upvote-button', onClick: this.handleVote, href: '#' },
 				_react2.default.createElement(
 					'span',
 					null,
@@ -38021,6 +38062,16 @@ var ProductItem = function (_React$Component) {
 				_react2.default.createElement(_ProductPopup2.default, { status: this.state.productPopupStatus, hidePopup: this.hideProductPopup })
 			);
 		}
+	}], [{
+		key: 'getStores',
+		value: function getStores() {
+			return [_ProductStore2.default];
+		}
+	}, {
+		key: 'getPropsFromStores',
+		value: function getPropsFromStores() {
+			return _ProductStore2.default.getState();
+		}
 	}]);
 
 	return ProductItem;
@@ -38028,7 +38079,7 @@ var ProductItem = function (_React$Component) {
 
 exports.default = ProductItem;
 
-},{"./ProductPopup":186,"react":175}],185:[function(require,module,exports){
+},{"../../actions":176,"../../stores/ProductStore":188,"./ProductPopup":186,"alt-utils/lib/connectToStores":1,"react":175}],185:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -38071,7 +38122,7 @@ var ProductList = function (_React$Component) {
 				'ul',
 				{ className: 'product-list' },
 				this.props.productList.map(function (item, idx) {
-					return _react2.default.createElement(_ProductItem2.default, _extends({ key: idx }, item));
+					return _react2.default.createElement(_ProductItem2.default, _extends({ key: idx, pid: item.key }, item));
 				})
 			);
 		}

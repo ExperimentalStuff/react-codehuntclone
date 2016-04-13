@@ -60,7 +60,17 @@ class Actions {
 			var firebaseRef = new Firebase('https://producthunt-rainy.firebaseio.com/products');
 			firebaseRef.on('value', (snapshot) => {
 				// transform object to array with only values with lodash
-				var products = _.values(snapshot.val());
+
+				// require second fix because key is also needed for upvote function
+				var productsValue = snapshot.val();
+				// extract key, value as array and pass key back to array 
+				var products = _(productsValue).keys().map((productKey)=>{
+					var item = _.clone(productsValue[productKey]);
+					item.key = productKey;
+					return item;
+				})
+				.value();
+
 				dispatch(products);
 			})
 		}
@@ -75,6 +85,20 @@ class Actions {
 		}
 	}
 
+	addVote(productId, userId) {
+		return (dispatch) => {
+			var firebaseRef = new Firebase('https://producthunt-rainy.firebaseio.com');
+
+			firebaseRef = firebaseRef.child('products').child(productId).child('upvote');
+
+			var vote = 0;
+			firebaseRef.on('value', (snapshot)=>{
+				vote = snapshot.val();
+			});
+
+			firebaseRef.set(vote+1);
+		}
+	}
 
 }
 
