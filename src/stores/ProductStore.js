@@ -8,7 +8,8 @@ class ProductStore {
 	constructor (){
 		this.state = {
 			user: null,
-			products: []
+			products: [],
+			comments: []
 		};
 	}
 
@@ -24,6 +25,11 @@ class ProductStore {
 		var productArray = Object.keys(products).map(function(key){return products[key];});
 		*/
 		this.setState({products: products});
+	}
+
+	@bind(Actions.getComments)
+	getComments(comments) {
+		this.setState({comments: comments});
 	}
 }
 

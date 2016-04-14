@@ -9,20 +9,6 @@ import ProductStore from '../../stores/ProductStore';
 class ProductPopup extends React.Component {
 	constructor (){
 		super();
-		this.state = {
-			comments: [
-				{
-					name: "Leo",
-					avatar: "/img/leo.jpeg",
-					content: "I love this product"
-				},
-				{
-					name: "Jhonnt",
-					avatar: "/img/hieu.jpeg",
-					content: "Me too"
-				}
-			]
-		}
 	}
 
 	static getStores() {
@@ -32,6 +18,14 @@ class ProductPopup extends React.Component {
 	static getPropsFromStores() {
 		return ProductStore.getState();
 	}		
+
+	shouldComponentUpdate(nextProps, nextState) {
+		if (nextProps.status && this.props.status != nextProps.status) {
+			Actions.getComments(this.props.pid);
+		}
+
+		return true;
+	}
 
 	renderHeader (){
 		return (
@@ -67,7 +61,7 @@ class ProductPopup extends React.Component {
 						this.props.user
 						? 
 						<section className="post-comment">
-							<img className="medium-avatar" src="/img/leo.jpeg"/>
+							<img className="medium-avatar" src={this.props.user.avatar} />
 							<input placeholder="What do you think of this product?" onKeyUp={this.handleComment}/>
 						</section>						
 						:
@@ -92,7 +86,7 @@ class ProductPopup extends React.Component {
 		return (
 				<ul className="comment-list">
 					{
-						this.state.comments.map(function(comment,idx){
+						this.props.comments.map(function(comment,idx){
 							return (
 									<li key={idx}>
 										<img className="medium-avatar" src={comment.avatar} />
